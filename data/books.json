@@ -1,0 +1,19 @@
+[
+      {
+    "id": 1,
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genre": "Self-help",
+    "rating": 4.8,
+    "publishedYear": 2018
+  },
+  
+  {
+    "id": 2,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Classic",
+    "rating": 4.2,
+    "publishedYear": 1925
+  }
+]
