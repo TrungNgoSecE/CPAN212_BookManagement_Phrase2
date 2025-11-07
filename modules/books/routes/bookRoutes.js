@@ -1,47 +1,136 @@
-import express from "express";
-import { validationResult } from "express-validator";
-import {
-  getAllBooks,
-  getBookById,
-  addNewBook,
-  updateBook,
-  deleteBook
-} from "../models/bookModel.js";
-import { validateBook } from "../middlewares/bookValidation.js";
+const express = require("express");
+const { validationResult } = require("express-validator");
+const Book = require("../models/bookModels.js");
+
+
+const {
+  validateBookCreation,
+  validateBookUpdate
+} = require("../middlewares/bookValidation.js");
+
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json(getAllBooks());
+
+
+router.get("/", async (req, res, next) => {
+  try {
+    const { search, sort, page = 1, limit = 10, genre } = req.query;
+
+
+    let query = {};
+
+
+    if (search) {
+      query.title = { $regex: search, $options: 'i' };
+    }
+    if (genre) {
+      query.genre = genre;
+    }
+
+
+    let sortOption = { createdAt: -1 };
+    if (sort) {
+      const sortField = sort.startsWith('-') ? sort.substring(1) : sort;
+      const sortOrder = sort.startsWith('-') ? -1 : 1;
+      sortOption = { [sortField]: sortOrder };
+    }
+
+
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+
+    const books = await Book.find(query)
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limitNum);
+
+
+    const totalBooks = await Book.countDocuments(query);
+
+
+    res.json({
+      message: "Books fetched successfully",
+      pagination: {
+        currentPage: pageNum,
+        totalPages: Math.ceil(totalBooks / limitNum),
+        totalBooks,
+      },
+      data: books,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get("/:id", (req, res) => {
-  const book = getBookById(parseInt(req.params.id));
-  if (!book) return res.status(404).json({ message: "Book not found" });
-  res.json(book);
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    res.json(book);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post("/", validateBook, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const newBook = addNewBook(req.body);
-  res.status(201).json(newBook);
+
+router.post("/", validateBookCreation, async (req, res, next) => {
+  try {
+    const newBook = new Book(req.body);
+    const savedBook = await newBook.save();
+
+
+    res.status(201).json(savedBook);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.put("/:id", validateBook, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const updated = updateBook(parseInt(req.params.id), req.body);
-  if (!updated) return res.status(404).json({ message: "Book not found" });
-  res.json(updated);
+
+router.put("/:id", validateBookUpdate, async (req, res, next) => {
+  try {
+    const updatedBook = await Book.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    res.json(updatedBook);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.delete("/:id", (req, res) => {
-  const deleted = deleteBook(parseInt(req.params.id));
-  if (!deleted) return res.status(404).json({ message: "Book not found" });
-  res.json(deleted);
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const deletedBook = await Book.findByIdAndDelete(req.params.id);
+
+
+    if (!deletedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    res.json({ message: "Book deleted successfully", deletedBook });
+  } catch (err) {
+    next(err);
+  }
 });
 
-export default router;
+
+module.exports = router;
