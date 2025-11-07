@@ -1,15 +1,21 @@
-import express from "express";
-import bookRoutes from "./modules/books/routes/bookRoutes.js";
+
+require('dotenv').config();
+
+const express = require("express");
+const connectDB = require('./shared/middlewares/connect-db');
+const bookRoutes = require("./modules/books/routes/bookRoutes.js");
+
+connectDB();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use("/api/books", bookRoutes);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   res.status(404).json({ message: "Route not found" });
 });
 
