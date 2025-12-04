@@ -1,0 +1,77 @@
+.book-item {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+}
+
+.book-item h3 {
+  margin-bottom: 6px;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.book-item p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #4b5563;
+}
+
+.book-rating {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.book-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.view-btn {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.view-btn:hover {
+  background: #d1d5db;
+}
+
+.edit-btn {
+  background: #4f46e5;
+  color: white !important;
+}
+
+.edit-btn:hover {
+  background: #4338ca;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
