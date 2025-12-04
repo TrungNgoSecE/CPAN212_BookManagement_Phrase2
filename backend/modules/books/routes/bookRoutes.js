@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { search, sort, page = 1, limit = 10, genre } = req.query;
+    const { search, sort, page = 1, limit = 500, genre } = req.query;
 
 
     let query = {};
