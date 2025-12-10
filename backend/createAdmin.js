@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const User = require("./modules/books/models/userModel");
+const User = require("./modules/books/models/userModels");
 require("dotenv").config();
 
 mongoose.connect(process.env.DB_URL).then(async () => {

@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const User = require("./modules/books/models/userModel");
+const User = require("./modules/books/models/userModels");
 
 async function createUser() {
   try {
