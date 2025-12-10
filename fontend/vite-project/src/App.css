@@ -1,0 +1,31 @@
+.navbar {
+  background: #111827;
+  color: #ffffff;
+  padding: 14px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.navbar a {
+  margin-left: 20px;
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar a:hover {
+  color: #a5b4fc;
+}
+
+.main-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+}
