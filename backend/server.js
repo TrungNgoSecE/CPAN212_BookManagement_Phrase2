@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require("express");
 const connectDB = require('./shared/middlewares/connect-db');
 const bookRoutes = require("./modules/books/routes/bookRoutes.js");
+const authRoutes = require("./modules/books/routes/authRoutes.js");
 
 connectDB();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/books", bookRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Route not found" });
